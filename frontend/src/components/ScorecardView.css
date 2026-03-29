@@ -1,0 +1,456 @@
+/* =========================================
+   SCORECARD PAGE
+   ========================================= */
+
+.scorecard-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+/* Live update toast */
+.live-toast {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 999;
+  background: rgba(10,132,255,0.9);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(10,132,255,0.4);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+.live-toast.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Back button */
+.scorecard-back {
+  padding-top: 24px;
+  padding-bottom: 8px;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  background: rgba(10,132,255,0.08);
+  border-radius: 50px;
+  border: 1px solid rgba(10,132,255,0.2);
+  transition: all 0.2s ease;
+}
+.back-btn:hover {
+  background: rgba(10,132,255,0.15);
+  border-color: rgba(10,132,255,0.35);
+  transform: translateX(-2px);
+}
+
+/* ── Match Hero ── */
+.scorecard-hero {
+  padding: 32px 40px 0;
+}
+.scorecard-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 36px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+.scorecard-hero-inner::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(10,132,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.scorecard-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.team-a { align-items: flex-start; text-align: left; }
+.team-b { align-items: flex-end; text-align: right; }
+
+.team-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 900;
+  color: #fff;
+}
+.team-a-avatar {
+  background: linear-gradient(135deg, #0a84ff, #5ac8fa);
+  box-shadow: 0 8px 24px rgba(10,132,255,0.35);
+}
+.team-b-avatar {
+  background: linear-gradient(135deg, #30d158, #34c759);
+  box-shadow: 0 8px 24px rgba(48,209,88,0.35);
+}
+.team-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+.team-score-big {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.scorecard-vs-centre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.scorecard-vs-text {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--text-muted);
+}
+.last-update-text {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.toss-info {
+  text-align: center;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: rgba(255,214,10,0.06);
+  border: 1px solid rgba(255,214,10,0.12);
+  border-radius: var(--radius-lg);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ── Innings Tabs ── */
+.innings-tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  padding-bottom: 0;
+}
+.innings-tab-btn {
+  padding: 10px 28px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 50px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.innings-tab-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.18);
+  color: var(--text-primary);
+}
+.innings-tab-btn.active {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(10,132,255,0.4);
+}
+
+/* ── Innings Panel ── */
+.scorecard-content {
+  padding: 24px 40px 60px;
+}
+
+.innings-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.innings-header {
+  padding: 28px 32px;
+  background: linear-gradient(160deg, rgba(10,132,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+  border-bottom: 1px solid var(--border);
+}
+.innings-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.innings-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  background: rgba(10,132,255,0.1);
+  padding: 3px 10px;
+  border-radius: 50px;
+}
+.innings-team {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.innings-score-display {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+.innings-runs {
+  font-size: 56px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.innings-divider {
+  font-size: 28px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+.innings-wickets {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent-red);
+}
+.innings-overs {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-left: 8px;
+  font-weight: 400;
+}
+
+/* Rate Cards */
+.rate-cards-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.rate-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  min-width: 80px;
+}
+.rate-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.rate-value {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* Overs progress */
+.over-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.over-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.over-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+  border-radius: 6px;
+  transition: width 1s ease;
+  position: relative;
+}
+.over-progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(90,200,250,0.7);
+}
+.over-progress-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* Ball History */
+.ball-history-section {
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(0,0,0,0.3);
+}
+.ball-history-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.ball-history-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ball-bubble {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  animation: ball-drop 0.4s ease both;
+  transition: transform 0.2s;
+  cursor: default;
+}
+.ball-bubble:hover {
+  transform: scale(1.2);
+}
+
+/* Innings Section (Batting/Bowling) */
+.innings-section {
+  padding: 0 0 4px;
+}
+.innings-section-header {
+  padding: 14px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.innings-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.batting-title { color: var(--accent-blue); }
+.bowling-title { color: var(--accent-green); }
+
+/* Table overrides for scorecard */
+.cricket-table th {
+  padding: 12px 16px 10px;
+  background: rgba(0,0,0,0.2);
+}
+.cricket-table th:first-child, .cricket-table td:first-child {
+  padding-left: 32px;
+}
+.cricket-table th:last-child, .cricket-table td:last-child {
+  padding-right: 32px;
+}
+.cricket-table td { padding: 14px 16px; }
+.cricket-table .num { text-align: center; }
+.cricket-table .muted { color: var(--text-muted); font-weight: 400; }
+
+.batter-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.batter-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+.badge-half {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 50px;
+  font-weight: 700;
+  background: rgba(10,132,255,0.12);
+  color: var(--accent-blue);
+}
+.dismissal-cell {
+  font-size: 12px;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.runs-cell { font-size: 18px; }
+.wickets-cell {
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--accent-red) !important;
+}
+.sr-badge { font-weight: 700; font-size: 13px; }
+
+/* Row hovers */
+.batting-row:hover td, .bowling-row:hover td {
+  background: rgba(10,132,255,0.04);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .scorecard-hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 16px;
+  }
+  .team-a, .team-b { align-items: center; }
+  .team-score-big { font-size: 36px; }
+  .innings-runs { font-size: 40px; }
+  .rate-cards-row { gap: 8px; }
+  .rate-card { padding: 10px 14px; min-width: 70px; }
+  .scorecard-content, .scorecard-hero, .scorecard-back, .innings-tabs {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .cricket-table th:first-child, .cricket-table td:first-child { padding-left: 16px; }
+  .cricket-table th:last-child, .cricket-table td:last-child { padding-right: 16px; }
+  .innings-header { padding: 20px; }
+  .ball-history-section { padding: 14px 20px; }
+}

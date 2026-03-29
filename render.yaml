@@ -1,0 +1,32 @@
+services:
+  # Backend Node.js Server
+  - type: web
+    name: cricket-backend
+    env: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false # User must provide this in the Render dashboard
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: cricket-frontend
+          envVarKey: RENDER_EXTERNAL_URL
+
+  # Frontend Vite App
+  - type: web
+    name: cricket-frontend
+    env: static
+    rootDir: frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        fromService:
+          type: web
+          name: cricket-backend
+          envVarKey: RENDER_EXTERNAL_URL
